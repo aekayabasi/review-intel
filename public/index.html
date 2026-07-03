@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Review Intel — Competitor App Analyzer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <span class="logo">◎ Review Intel</span>
+      <span id="health-badge" class="badge"></span>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero / Input -->
+    <section class="hero" id="hero">
+      <h1>Know your competitors.<br /><span class="accent">Beat them.</span></h1>
+      <p class="subtitle">Paste any App Store link. We scrape the reviews, and GPT turns them into a battle plan.</p>
+
+      <div class="search-card">
+        <div class="input-row">
+          <input id="app-input" type="text" placeholder="App Store URL or app ID — e.g. https://apps.apple.com/us/app/…/id880047117" autocomplete="off" />
+          <button id="analyze-btn" class="btn-primary">Analyze</button>
+        </div>
+        <div class="options-row">
+          <label>Country
+            <select id="country-select">
+              <option value="us" selected>🇺🇸 US</option>
+              <option value="gb">🇬🇧 UK</option>
+              <option value="de">🇩🇪 Germany</option>
+              <option value="fr">🇫🇷 France</option>
+              <option value="tr">🇹🇷 Turkey</option>
+              <option value="jp">🇯🇵 Japan</option>
+              <option value="au">🇦🇺 Australia</option>
+              <option value="ca">🇨🇦 Canada</option>
+              <option value="br">🇧🇷 Brazil</option>
+              <option value="in">🇮🇳 India</option>
+            </select>
+          </label>
+          <label>Max reviews
+            <select id="max-select">
+              <option value="100">100</option>
+              <option value="300" selected>300</option>
+              <option value="1000">1,000</option>
+              <option value="3000">3,000</option>
+              <option value="10000">10,000</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <p id="error-box" class="error hidden"></p>
+    </section>
+
+    <!-- Progress -->
+    <section id="progress" class="progress hidden">
+      <div class="app-chip" id="app-chip"></div>
+      <div class="steps">
+        <div class="step-block" id="step-scrape">
+          <div class="step"><div class="spinner"></div><span id="scrape-text">Scraping App Store reviews…</span></div>
+          <div class="progress-track"><div class="progress-fill" id="scrape-bar"></div></div>
+        </div>
+        <div class="step-block" id="step-analyze">
+          <div class="step"><div class="spinner"></div><span id="analyze-text">GPT analysis</span></div>
+          <div class="progress-track"><div class="progress-fill" id="analyze-bar"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results" class="results hidden">
+      <nav class="results-nav">
+        <a href="#overview">Overview</a>
+        <a href="#signals-section">Product Signals</a>
+        <a href="#categories-section">Categories</a>
+        <a href="#battleplan-section">Battle Plan</a>
+      </nav>
+
+      <div id="overview">
+        <div class="results-header">
+          <div id="result-app-chip"></div>
+          <div class="stats-row" id="stats-row"></div>
+        </div>
+
+        <div class="card summary-card">
+          <h2>Executive Summary</h2>
+          <p id="summary-text"></p>
+          <div class="sentiment-bar" id="sentiment-bar"></div>
+          <div class="sentiment-legend" id="sentiment-legend"></div>
+        </div>
+      </div>
+
+      <div id="signals-section">
+        <h2 class="section-title">🎯 Product Signals</h2>
+        <p class="section-note">Specific gaps users mentioned — rare mentions count more than loud complaints. Sparse is honest signal, not a bug.</p>
+        <div class="filter-bar" id="signal-filters">
+          <select id="filter-area"><option value="">All feature areas</option></select>
+          <select id="filter-type"><option value="">All types</option></select>
+          <select id="filter-competitor"><option value="">All competitors</option></select>
+          <label class="filter-check"><input type="checkbox" id="filter-novelty" /> Singletons only</label>
+        </div>
+        <div id="product-signals" class="signals-list"></div>
+      </div>
+
+      <div id="categories-section">
+        <details class="categories-details">
+          <summary class="section-title collapsible">Feedback Categories <span class="summary-hint">operational — table stakes, click to expand</span></summary>
+          <div id="categories" class="categories-grid"></div>
+        </details>
+      </div>
+
+      <div id="battleplan-section">
+        <h2 class="section-title">⚔️ Battle Plan — How to Beat Them</h2>
+        <div class="card plan-card">
+          <h3>Positioning</h3>
+          <p id="positioning-text"></p>
+        </div>
+        <h3 class="sub-title">Features to Build</h3>
+        <div id="features" class="features-grid"></div>
+        <div class="two-col">
+          <div class="card">
+            <h3>🎨 Design Ideas</h3>
+            <ul id="design-ideas"></ul>
+          </div>
+          <div class="card">
+            <h3>⚡ Quick Wins</h3>
+            <ul id="quick-wins"></ul>
+          </div>
+        </div>
+        <div class="card avoid-card">
+          <h3>🚫 Mistakes to Avoid</h3>
+          <ul id="avoid-list"></ul>
+        </div>
+      </div>
+
+      <div class="footer-actions">
+        <button id="export-pdf-btn" class="btn-secondary">Export PDF</button>
+        <button id="export-btn" class="btn-secondary">Export JSON</button>
+        <button id="new-btn" class="btn-primary">Analyze Another App</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

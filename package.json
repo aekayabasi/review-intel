@@ -1,0 +1,18 @@
+{
+  "name": "app-review-intel",
+  "version": "1.0.0",
+  "description": "Scrape competitor App Store reviews via Apify and analyze them with GPT to find feature/design opportunities.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pdfkit": "^0.19.1"
+  }
+}
