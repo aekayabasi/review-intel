@@ -18,25 +18,8 @@ const APIFY_TOKEN = process.env.APIFY_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o";
 const OPENAI_MAP_MODEL = process.env.OPENAI_MAP_MODEL || "gpt-4o-mini";
-const APP_PASSWORD = process.env.APP_PASSWORD || "atilla2026";
 
 // ---------- helpers ----------
-
-// Basic auth middleware — browser prompts for password.
-function requireAuth(req, res, next) {
-  const auth = req.headers.authorization;
-  if (!auth || !auth.startsWith("Basic ")) {
-    res.setHeader("WWW-Authenticate", 'Basic realm="Review Intel"');
-    return res.status(401).send("Authentication required");
-  }
-  const credentials = Buffer.from(auth.slice(6), "base64").toString("utf-8");
-  const [user, pass] = credentials.split(":");
-  if (pass !== APP_PASSWORD) {
-    res.setHeader("WWW-Authenticate", 'Basic realm="Review Intel"');
-    return res.status(401).send("Authentication required");
-  }
-  next();
-}
 
 // Accepts a full App Store URL, "id123456789", or a raw numeric ID.
 function parseAppId(input) {
@@ -50,16 +33,13 @@ function parseAppId(input) {
 
 // ---------- routes ----------
 
-// Health check — no auth, for frontend to check API key status
+// Health check — for frontend to check API key status
 app.get("/api/health", (_req, res) => {
   res.json({
     apify: Boolean(APIFY_TOKEN),
     openai: Boolean(OPENAI_API_KEY),
   });
 });
-
-// Apply auth to all other API routes.
-app.use("/api", requireAuth);
 
 // Resolve app metadata (name, icon, rating) via the public iTunes Lookup API.
 app.get("/api/app-info", async (req, res) => {
